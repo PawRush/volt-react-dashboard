@@ -56,6 +56,10 @@
     "build": "react-scripts build",
     "build-local": "PUBLIC_URL=./ react-scripts build",
     "test": "react-scripts test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
@@ -74,5 +78,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
   }
 }
