@@ -22,19 +22,23 @@ export class FrontendStack extends cdk.Stack {
     // Persisting production buckets for safety and compliance reasons
     const removalPolicy = isProd ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY;
 
+    // Generate unique bucket names
+    const timestamp = Date.now().toString().slice(-6);
+    const uniqueSuffix = `${timestamp}`;
+
     // Provisions an Amazon CloudFront Distribution that serves objects from an AWS S3 Bucket via an Origin Access Control (OAC).
     // For more information, see https://docs.aws.amazon.com/solutions/latest/constructs/aws_cloudfront_s3.html
     const cloudfrontToS3 = new CloudFrontToS3(this, "CloudFrontToS3", {
       // S3 content bucket configuration
       bucketProps: {
-        bucketName: `${id.toLowerCase()}-${this.account}`,
+        bucketName: `${id.toLowerCase()}-content-${uniqueSuffix}`,
         removalPolicy,
         autoDeleteObjects: !isProd, // Only auto-delete in non-prod (required for DESTROY to work on non-empty buckets)
         versioned: false,
       },
       // S3 access logging bucket configuration
       loggingBucketProps: {
-        bucketName: `${id.toLowerCase()}-s3logs-${this.account}`,
+        bucketName: `${id.toLowerCase()}-s3logs-${uniqueSuffix}`,
         removalPolicy,
         autoDeleteObjects: !isProd,
         lifecycleRules: [
@@ -47,7 +51,7 @@ export class FrontendStack extends cdk.Stack {
       },
       // CloudFront logging bucket configuration
       cloudFrontLoggingBucketProps: {
-        bucketName: `${id.toLowerCase()}-cflogs-${this.account}`,
+        bucketName: `${id.toLowerCase()}-cflogs-${uniqueSuffix}`,
         removalPolicy,
         autoDeleteObjects: !isProd,
         lifecycleRules: [
@@ -58,31 +62,7 @@ export class FrontendStack extends cdk.Stack {
           },
         ],
       },
-      insertHttpSecurityHeaders: false,
-      // Security headers
-      responseHeadersPolicyProps: {
-        securityHeadersBehavior: {
-          contentTypeOptions: { override: true },
-          frameOptions: {
-            frameOption: cloudfront.HeadersFrameOption.DENY,
-            override: true,
-          },
-          strictTransportSecurity: {
-            accessControlMaxAge: cdk.Duration.seconds(47304000),
-            includeSubdomains: true,
-            override: true,
-          },
-        },
-        customHeadersBehavior: {
-          customHeaders: [
-            {
-              header: "Cache-Control",
-              value: "no-store, no-cache",
-              override: true,
-            },
-          ],
-        },
-      },
+      insertHttpSecurityHeaders: true,
       // CloudFront distribution configuration
       cloudFrontDistributionProps: {
         comment: `${id} - ${environment}`,
