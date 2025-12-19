@@ -1,0 +1,45 @@
+version: 0.2
+
+env:
+  variables:
+    NPM_CONFIG_PRODUCTION: "false"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing CDK dependencies..."
+      - (cd infra && npm ci --legacy-peer-deps --prefer-offline --no-progress)
+
+  build:
+    commands:
+      - echo "Deploying frontend to prod environment"
+      - echo "Environment: $ENVIRONMENT"
+      - |
+        if [ -d "$CODEBUILD_SRC_DIR_FrontendBuildOutput" ]; then
+          echo "Copying frontend build artifacts..."
+          mkdir -p build
+          cp -r "$CODEBUILD_SRC_DIR_FrontendBuildOutput"/* build/ || cp -r build-artifacts/* build/ 2>/dev/null || true
+        fi
+      - echo "Building CDK infrastructure..."
+      - (cd infra && npm run build)
+      - echo "Deploying CDK stack..."
+      - export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
+      - export CDK_DEFAULT_REGION=us-east-1
+      - (cd infra && npx cdk deploy VoltReactDashboardFrontend-$ENVIRONMENT --context environment=$ENVIRONMENT --context withAssets=false --require-approval never --progress events)
+      - echo "Getting deployment outputs..."
+      - export BUCKET=$(aws cloudformation describe-stacks --stack-name VoltReactDashboardFrontend-$ENVIRONMENT --region us-east-1 --query 'Stacks[0].Outputs[?OutputKey==`BucketName`].OutputValue' --output text)
+      - export DIST_ID=$(aws cloudformation describe-stacks --stack-name VoltReactDashboardFrontend-$ENVIRONMENT --region us-east-1 --query 'Stacks[0].Outputs[?OutputKey==`DistributionId`].OutputValue' --output text)
+      - echo "Syncing frontend to S3 bucket $BUCKET..."
+      - aws s3 sync build/ s3://$BUCKET/ --delete --cache-control "public, max-age=3600" --exclude ".git/*" --exclude "node_modules/*"
+      - echo "Invalidating CloudFront cache..."
+      - aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
+      - echo "Frontend deployment complete"
+      - echo "FRONTEND_BUCKET=$BUCKET" > deployment-outputs.env
+      - echo "CLOUDFRONT_DIST=$DIST_ID" >> deployment-outputs.env
+
+artifacts:
+  files:
+    - "deployment-outputs.env"
+  name: FrontendDeployOutput

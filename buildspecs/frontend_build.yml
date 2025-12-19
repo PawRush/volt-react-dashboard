@@ -1,0 +1,29 @@
+version: 0.2
+
+env:
+  variables:
+    NPM_CONFIG_PRODUCTION: "true"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies..."
+      - npm ci --legacy-peer-deps --prefer-offline --no-progress
+
+  build:
+    commands:
+      - echo "Building frontend application..."
+      - export NODE_OPTIONS=--openssl-legacy-provider
+      - npm run build
+      - echo "Frontend build complete"
+
+artifacts:
+  files:
+    - "build/**/*"
+  name: FrontendBuildOutput
+
+cache:
+  paths:
+    - "~/.npm/**/*"

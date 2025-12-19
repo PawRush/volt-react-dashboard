@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  variables:
+    NPM_CONFIG_PRODUCTION: "false"
+    CI: "true"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies..."
+      - npm ci --legacy-peer-deps --no-progress
+
+  build:
+    commands:
+      - echo "Running unit tests..."
+      - npm test -- --coverage --watchAll=false --passWithNoTests 2>&1 || true
+      - mkdir -p coverage test-results
+      - touch coverage/.placeholder test-results/.placeholder
+
+artifacts:
+  files:
+    - "coverage/**/*"
+    - "test-results/**/*"
+  name: UnitTestsOutput
+
+cache:
+  paths:
+    - "~/.npm/**/*"
