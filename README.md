@@ -46,6 +46,35 @@ This product is built using the following widely used technologies:
 - Sass preprocessing language
 - NPM & Yarn
 
+## AWS Deployment
+
+The Volt React Dashboard is deployed and live on AWS CloudFront:
+
+**Production URL:** https://d3co5j0i9nbeqn.cloudfront.net
+
+### Infrastructure
+
+- **CloudFront Distribution:** E10MIDYXWBDIDU
+- **S3 Bucket:** voltreactdashboardfrontend-preview-jairosp-content-295685
+- **Region:** us-east-1
+- **CDK Stack:** VoltReactDashboardFrontend-preview-jairosp
+
+### Redeployment
+
+To redeploy after making changes:
+
+```bash
+# Build the React application
+npm run build
+
+# Deploy to AWS
+export CDK_DEFAULT_ACCOUNT="763835214576"
+export CDK_DEFAULT_REGION="us-east-1"
+./scripts/deploy.sh
+```
+
+For detailed deployment information, see `deployment_plan.md` and `AGENTS.md`.
+
 ## Table of Contents
 
 * [Version](#versions)
