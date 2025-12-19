@@ -162,10 +162,6 @@ export class PipelineStack extends cdk.Stack {
             project: deployFrontendProject,
             input: artifacts.source,
             extraInputs: [artifacts.frontendBuild],
-            environmentVariables: {
-              ENVIRONMENT: { value: "prod" },
-              CODEBUILD_SRC_DIR_FrontendBuildOutput:{ value: artifacts.frontendBuild.s3Location!.bucketName },
-            },
           }),
         ],
       },
