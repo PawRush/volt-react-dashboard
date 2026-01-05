@@ -1,5 +1,11 @@
 # [Volt React Dashboard Bootstrap 5](https://demo.themesberg.com/volt-react-dashboard) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fthemesberg%2Fvolt-react-dashboard&via=themesberg&text=Check%20out%20this%20open%20source%20React%20Dashboard)
 
+## Deployment
+
+**Live URL:** https://d2gbabtd2x0uia.cloudfront.net
+
+Deploy: `./scripts/deploy.sh` | See [DEPLOYMENT.md](./DEPLOYMENT.md) for details.
+
 [![version](https://img.shields.io/npm/v/@themesberg/volt-react-dashboard)](https://www.npmjs.com/package/@themesberg/volt-react-dashboard)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 [![GitHub issues open](https://img.shields.io/github/issues/themesberg/volt-react-dashboard.svg)](https://github.com/themesberg/volt-react-dashboard/issues?q=is%3Aopen+is%3Aissue)
