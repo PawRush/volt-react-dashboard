@@ -8,7 +8,7 @@ test.describe('Dashboard Navigation', () => {
     await page.waitForLoadState('networkidle');
 
     // Click on Transactions link in sidebar
-    await page.locator('text=Transactions').first().click();
+    await page.getByRole('link', { name: 'Transactions' }).click();
     await page.waitForLoadState('networkidle');
 
     // Verify we're on the transactions page
@@ -25,14 +25,14 @@ test.describe('Dashboard Navigation', () => {
     await page.waitForLoadState('networkidle');
 
     // Click on Settings link in sidebar
-    await page.locator('text=Settings').first().click();
+    await page.getByRole('link', { name: 'Settings' }).click();
     await page.waitForLoadState('networkidle');
 
     // Verify we're on the settings page
     expect(page.url()).toContain('/settings');
 
     // Verify settings page elements are visible
-    await expect(page.locator('text=General information').or(page.locator('text=Profile'))).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'General information' })).toBeVisible();
   });
 
   test('should navigate to Bootstrap Tables', async ({ page }) => {
@@ -70,7 +70,7 @@ test.describe('Dashboard Navigation', () => {
     // Verify submenu items are visible
     await expect(page.locator('text=Sign In').first()).toBeVisible();
     await expect(page.locator('text=Sign Up').first()).toBeVisible();
-    await expect(page.locator('text=Forgot password')).toBeVisible();
+    await expect(page.locator('text=Forgot password').first()).toBeVisible();
 
     // Click again to collapse
     await pageExamplesAccordion.click();
@@ -104,7 +104,7 @@ test.describe('Dashboard Navigation', () => {
     expect(page.url()).toContain('/components/buttons');
 
     // Go back to overview
-    await page.locator('text=Overview').first().click();
+    await page.getByRole('link', { name: 'Overview' }).click();
     await page.waitForLoadState('networkidle');
     expect(page.url()).toContain('/dashboard/overview');
   });
@@ -115,15 +115,16 @@ test.describe('Dashboard Navigation', () => {
     await page.waitForLoadState('networkidle');
 
     // Check that Overview nav item has active class
-    const overviewNavItem = page.locator('nav a[href*="overview"]').first();
-    const overviewParent = page.locator('.nav-item:has(a[href*="overview"])').first();
+    const overviewNavItem = page.getByRole('link', { name: 'Overview' });
 
-    // Either the link or its parent should have the active class
+    // The link should have the active class
     const hasActiveClass = await overviewNavItem.evaluate((el) =>
-      el.classList.contains('active') || el.closest('.nav-item')?.classList.contains('active')
+      el.classList.contains('active') || 
+      el.closest('.nav-item')?.classList.contains('active') ||
+      el.closest('a')?.classList.contains('active')
     );
 
-    expect(hasActiveClass).toBe(true);
+    expect(hasActiveClass).toBeTruthy();
   });
 
   test('should navigate to documentation pages', async ({ page }) => {
@@ -137,7 +138,7 @@ test.describe('Dashboard Navigation', () => {
 
     // Verify documentation links are visible
     await expect(page.locator('text=Quick Start').first()).toBeVisible();
-    await expect(page.locator('text=Folder Structure')).toBeVisible();
+    await expect(page.locator('text=Folder Structure').first()).toBeVisible();
 
     // Navigate to Quick Start
     await page.locator('text=Quick Start').first().click();
@@ -154,14 +155,14 @@ test.describe('Dashboard Navigation', () => {
     await page.waitForLoadState('networkidle');
 
     // Click on Overview to go back
-    await page.locator('text=Overview').first().click();
+    await page.getByRole('link', { name: 'Overview' }).click();
     await page.waitForLoadState('networkidle');
 
     // Verify we're back on dashboard overview
     expect(page.url()).toContain('/dashboard/overview');
 
     // Verify overview page content
-    await expect(page.locator('text=Sales Value')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Sales Value' }).first()).toBeVisible();
   });
 
   test('should handle breadcrumb or back navigation', async ({ page }) => {
@@ -170,7 +171,7 @@ test.describe('Dashboard Navigation', () => {
     await page.waitForLoadState('networkidle');
 
     // Navigate to a different page
-    await page.locator('text=Settings').first().click();
+    await page.getByRole('link', { name: 'Settings' }).click();
     await page.waitForLoadState('networkidle');
 
     // Use browser back button
