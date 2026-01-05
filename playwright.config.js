@@ -13,7 +13,7 @@ module.exports = defineConfig({
   reporter: 'html',
   timeout: 60000,
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     actionTimeout: 10000,
@@ -26,7 +26,7 @@ module.exports = defineConfig({
     }
   ],
 
-  webServer: {
+  webServer: process.env.BASE_URL ? undefined :{
     command: 'npm start',
     url: 'http://localhost:3000',
     reuseExistingServer: true,
