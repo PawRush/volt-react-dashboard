@@ -26,7 +26,7 @@ module.exports = defineConfig({
     }
   ],
 
-  webServer: process.env.BASE_URL ? undefined :{
+  webServer: process.env.BASE_URL ? undefined : {
     command: 'npm start',
     url: 'http://localhost:3000',
     reuseExistingServer: true,
