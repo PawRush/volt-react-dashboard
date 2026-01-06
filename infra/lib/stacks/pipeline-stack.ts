@@ -40,7 +40,7 @@ export class PipelineStack extends cdk.Stack {
         "cd infra",
         "npm ci",
         "npm run build",
-        "npx cdk synth",
+        `npx cdk synth --context codeConnectionArn=${props.codeConnectionArn} --context repositoryName=${props.repositoryName} --context branchName=${props.branchName}`,
       ],
       primaryOutputDirectory: "infra/cdk.out",
       env: {
