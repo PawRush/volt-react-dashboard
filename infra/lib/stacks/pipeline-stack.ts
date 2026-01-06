@@ -37,16 +37,14 @@ export class PipelineStack extends cdk.Stack {
         "npm run build",
 
         // Build and synth CDK
-        "cd infra && npm ci",
-        "cd infra && npm run build",
-        "cd infra && npx cdk synth",
+        "cd infra",
+        "npm ci",
+        "npm run build",
+        "npx cdk synth",
       ],
       primaryOutputDirectory: "infra/cdk.out",
       env: {
-        // Disables the ESLint plugin that react-scripts runs during build.
         DISABLE_ESLINT_PLUGIN: "true",
-        // In Create React App, when CI=true, warnings are treated as errors and the build fails.
-        // Setting it to false allows the build to succeed even with warnings.
         CI: "false",
       },
     });
