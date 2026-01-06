@@ -8,10 +8,10 @@ const app = new cdk.App();
 
 const getDefaultEnvironment = (): string => {
   try {
-    const username = process.env.USER || execSync('whoami').toString().trim();
+    const username = process.env.USER || execSync("whoami").toString().trim();
     return `preview-${username}`;
   } catch {
-    return 'preview-local';
+    return "preview-local";
   }
 };
 
@@ -20,12 +20,12 @@ const account = process.env.CDK_DEFAULT_ACCOUNT;
 const region = process.env.CDK_DEFAULT_REGION || "us-east-1";
 
 const buildOutputPath = app.node.tryGetContext("buildPath") || "../build";
-const pipelineOnly = app.node.tryGetContext("pipelineOnly") === "true";
 const codeConnectionArn = app.node.tryGetContext("codeConnectionArn");
-const repositoryName = app.node.tryGetContext("repositoryName") || "PawRush/volt-react-dashboard";
-const branchName = app.node.tryGetContext("branchName") || "deploy-to-aws";
+const repositoryName = app.node.tryGetContext("repositoryName") || "user/volt-react-dashboard";
+const branchName = app.node.tryGetContext("branchName") || "main";
 
-if (!pipelineOnly) {
+// Deploy FrontendStack directly (for local dev or preview environments)
+if (!codeConnectionArn) {
   new FrontendStack(app, `VoltDashFrontend-${environment}`, {
     env: { account, region },
     environment,
@@ -35,10 +35,11 @@ if (!pipelineOnly) {
   });
 }
 
+// Deploy Pipeline (when codeConnectionArn is provided)
 if (codeConnectionArn) {
-  new PipelineStack(app, "VoltDashPipelineStack", {
+  new PipelineStack(app, "VoltDashPipelineStackV2", {
     env: { account, region },
-    description: "CI/CD Pipeline for Volt React Dashboard",
+    description: "CI/CD Pipeline for Volt React Dashboard (CDK Pipelines)",
     codeConnectionArn,
     repositoryName,
     branchName,
@@ -48,4 +49,3 @@ if (codeConnectionArn) {
 
 cdk.Tags.of(app).add("Project", "VoltDash");
 cdk.Tags.of(app).add("ManagedBy", "CDK");
-cdk.Tags.of(app).add("Environment", environment);

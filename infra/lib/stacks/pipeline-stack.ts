@@ -1,10 +1,9 @@
 import * as cdk from "aws-cdk-lib";
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import * as codepipeline from "aws-cdk-lib/aws-codepipeline";
-import * as codepipeline_actions from "aws-cdk-lib/aws-codepipeline-actions";
-import * as iam from "aws-cdk-lib/aws-iam";
+import * as pipelines from "aws-cdk-lib/pipelines";
 import { Construct } from "constructs";
-import { CodeBuildRole, ArtifactsBucket } from "../constructs/shared-constructs";
+import { FrontendStack } from "./frontend-stack";
 
 export interface PipelineStackProps extends cdk.StackProps {
   codeConnectionArn: string;
@@ -13,137 +12,67 @@ export interface PipelineStackProps extends cdk.StackProps {
 }
 
 export class PipelineStack extends cdk.Stack {
-  public readonly pipeline: codepipeline.Pipeline;
-  public readonly artifactsBucket: cdk.aws_s3.Bucket;
+  public readonly pipeline: pipelines.CodePipeline;
 
   constructor(scope: Construct, id: string, props: PipelineStackProps) {
     super(scope, id, props);
 
-    this.artifactsBucket = new ArtifactsBucket(this, "ArtifactsBucket").bucket;
+    const source = pipelines.CodePipelineSource.connection(
+      props.repositoryName,
+      props.branchName,
+      {
+        connectionArn: props.codeConnectionArn,
+        triggerOnPush: true,
+      }
+    );
 
-    const buildRole = new CodeBuildRole(this, "BuildRole", {
-      allowSecretsManager: true,
-      allowS3Artifacts: true,
-      allowCloudFormation: true,
-      allowCdkBootstrap: true,
-      additionalPolicies: [
-        new iam.PolicyStatement({
-          effect: iam.Effect.ALLOW,
-          actions: ["cloudfront:GetDistribution", "cloudfront:GetDistributionConfig"],
-          resources: ["*"],
-        }),
+    const synth = new pipelines.ShellStep("Synth", {
+      input: source,
+      commands: [
+        // Quality gates
+        "npm ci",
+        "npm run lint",
+
+        // Build frontend
+        "npm run build",
+
+        // Build and synth CDK
+        "cd infra && npm ci",
+        "cd infra && npm run build",
+        "cd infra && npx cdk synth",
       ],
-    });
-
-    const deployRole = new CodeBuildRole(this, "DeployRole", {
-      allowSecretsManager: true,
-      allowS3Artifacts: true,
-      allowCloudFormation: true,
-      allowCdkBootstrap: true,
-      additionalPolicies: [
-        new iam.PolicyStatement({
-          effect: iam.Effect.ALLOW,
-          actions: ["s3:ListBucket", "s3:GetBucketLocation", "s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
-          resources: ["arn:aws:s3:::voltdashfrontend-*", "arn:aws:s3:::voltdashfrontend-*/*"],
-        }),
-        new iam.PolicyStatement({
-          effect: iam.Effect.ALLOW,
-          actions: ["cloudfront:CreateInvalidation", "cloudfront:GetDistribution"],
-          resources: ["*"],
-        }),
-      ],
-    });
-
-    const frontendBuildProject = new codebuild.PipelineProject(this, "FrontendBuildProject", {
-      projectName: "VoltDash-FrontendBuild",
-      role: buildRole.role,
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
-        computeType: codebuild.ComputeType.SMALL,
+      primaryOutputDirectory: "infra/cdk.out",
+      env: {
+        // Disables the ESLint plugin that react-scripts runs during build.
+        DISABLE_ESLINT_PLUGIN: "true",
+        // In Create React App, when CI=true, warnings are treated as errors and the build fails.
+        // Setting it to false allows the build to succeed even with warnings.
+        CI: "false",
       },
-      buildSpec: codebuild.BuildSpec.fromSourceFilename("buildspecs/frontend_build.yml"),
     });
 
-    const deployFrontendProject = new codebuild.PipelineProject(this, "DeployFrontendProject", {
-      projectName: "VoltDash-DeployFrontend",
-      role: deployRole.role,
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
-        computeType: codebuild.ComputeType.SMALL,
-      },
-      buildSpec: codebuild.BuildSpec.fromSourceFilename("buildspecs/deploy_frontend.yml"),
-    });
-
-    const artifacts = {
-      source: new codepipeline.Artifact("SourceOutput"),
-      frontendBuild: new codepipeline.Artifact("FrontendBuildOutput"),
-    };
-
-    const [owner, repo] = props.repositoryName.split("/");
-
-    this.pipeline = new codepipeline.Pipeline(this, "Pipeline", {
-      pipelineName: "VoltDashPipeline",
+    this.pipeline = new pipelines.CodePipeline(this, "Pipeline", {
+      pipelineName: "VoltDashPipelineV2",
+      selfMutation: true,
       pipelineType: codepipeline.PipelineType.V2,
-      artifactBucket: this.artifactsBucket,
-      stages: [
-        {
-          stageName: "Source",
-          actions: [
-            new codepipeline_actions.CodeStarConnectionsSourceAction({
-              actionName: "Source",
-              owner,
-              repo,
-              branch: props.branchName,
-              connectionArn: props.codeConnectionArn,
-              output: artifacts.source,
-              triggerOnPush: true,
-            }),
-          ],
+      synth,
+      synthCodeBuildDefaults: {
+        buildEnvironment: {
+          buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
+          computeType: codebuild.ComputeType.MEDIUM,
         },
-        {
-          stageName: "Build",
-          actions: [
-            new codepipeline_actions.CodeBuildAction({
-              actionName: "FrontendBuild",
-              project: frontendBuildProject,
-              input: artifacts.source,
-              outputs: [artifacts.frontendBuild],
-            }),
-          ],
-        },
-        {
-          stageName: "DeployProd",
-          actions: [
-            new codepipeline_actions.CodeBuildAction({
-              actionName: "DeployFrontend",
-              project: deployFrontendProject,
-              input: artifacts.source,
-              extraInputs: [artifacts.frontendBuild],
-              environmentVariables: {
-                ENVIRONMENT: { value: "prod" },
-              },
-            }),
-          ],
-        },
-      ],
+      },
     });
 
-    new cdk.CfnOutput(this, "PipelineName", {
-      value: this.pipeline.pipelineName,
-      description: "CodePipeline Name",
+    // Deploy stage
+    const deployStage = new cdk.Stage(this, "Deploy", {
+      env: { account: this.account, region: this.region },
     });
-
-    new cdk.CfnOutput(this, "BuildRoleArn", {
-      value: buildRole.role.roleArn,
-      description: "CodeBuild Build Role ARN",
-      exportName: `${this.stackName}-BuildRoleArn`,
+    new FrontendStack(deployStage, "Frontend", {
+      environment: "prod",
+      buildOutputPath: "../build",
     });
-
-    new cdk.CfnOutput(this, "DeployRoleArn", {
-      value: deployRole.role.roleArn,
-      description: "CodeBuild Deploy Role ARN",
-      exportName: `${this.stackName}-DeployRoleArn`,
-    });
+    this.pipeline.addStage(deployStage);
 
     cdk.Tags.of(this).add("Stack", "Pipeline");
   }
