@@ -253,9 +253,13 @@ If you have questions or need help integrating the product please [contact us](h
 
 ## Deployment
 
-Live URL: https://d138kk433k26ga.cloudfront.net
+Live URL (preview): https://d138kk433k26ga.cloudfront.net
 
-Deploy: `./scripts/deploy.sh`
+Deploy preview: `./scripts/deploy.sh`
+
+Pipeline console: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltDashPipeline/view
+
+Deploy to production: `git push origin main`
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for details.
 

@@ -12,11 +12,17 @@ description: Deploy Volt React Dashboard to AWS S3 + CloudFront
 
 # Deployment Summary
 
-Your app is deployed to AWS at https://d138kk433k26ga.cloudfront.net
+Your app is deployed to AWS with a CI/CD pipeline.
 
-To redeploy: `./scripts/deploy.sh`
+Preview URL: https://d138kk433k26ga.cloudfront.net
+Production URL: Will be available after first pipeline run to `main` branch
 
-AWS Services used: S3, CloudFront, CloudFormation, Lambda (for deployment), IAM.
+Pipeline console: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltDashPipeline/view
+
+Deploy to production: `git push origin main`
+Deploy preview: `./scripts/deploy.sh`
+
+AWS Services used: S3, CloudFront, CloudFormation, CodePipeline, CodeBuild, CodeConnections, Lambda, IAM.
 
 ---
 
@@ -42,16 +48,20 @@ Deployment URL: https://d138kk433k26ga.cloudfront.net
 
 ---
 
-## ✅ Phase 2: Documentation
+## ✅ Phase 2: CI/CD Pipeline
 
 ```
 Status: ✅ Complete
+Pipeline Stack: VoltDashPipelineStack
+Pipeline Name: VoltDashPipeline
+Source Branch: main
+CodeConnection ARN: arn:aws:codeconnections:us-east-1:625164594347:connection/a670031e-870f-4947-b5bd-dfc7412ee588
 ```
 
 ### Phase 2 Tasks
-- ✅ 2.1: Update deployment_plan.md with final deployment information
-- ✅ 2.2: Add deployment section to README.md
-- ✅ 2.3: Finalize deployment documentation (rename to DEPLOYMENT.md)
+- ✅ 2.1: Create CodeConnection
+- ✅ 2.2: Create pipeline stack
+- ✅ 2.3: Deploy pipeline
 
 ---
 
