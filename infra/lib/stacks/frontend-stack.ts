@@ -7,6 +7,7 @@ import { Construct } from "constructs";
 export interface FrontendStackProps extends cdk.StackProps {
   environment: string;
   buildOutputPath: string;
+  withAssets?: boolean;
 }
 
 export class FrontendStack extends cdk.Stack {
@@ -103,14 +104,17 @@ export class FrontendStack extends cdk.Stack {
     const websiteBucket = cloudfrontToS3.s3Bucket!;
     const distribution = cloudfrontToS3.cloudFrontWebDistribution;
 
-    new s3deploy.BucketDeployment(this, "DeployWebsite", {
-      sources: [s3deploy.Source.asset(buildOutputPath)],
-      destinationBucket: websiteBucket,
-      distribution,
-      distributionPaths: ["/*"],
-      prune: true,
-      memoryLimit: 512,
-    });
+    const withAssets = this.node.tryGetContext("withAssets") !== "false";
+    if (withAssets) {
+      new s3deploy.BucketDeployment(this, "DeployWebsite", {
+        sources: [s3deploy.Source.asset(buildOutputPath)],
+        destinationBucket: websiteBucket,
+        distribution,
+        distributionPaths: ["/*"],
+        prune: true,
+        memoryLimit: 512,
+      });
+    }
 
     this.distributionDomainName = distribution.distributionDomainName;
     this.bucketName = websiteBucket.bucketName;
