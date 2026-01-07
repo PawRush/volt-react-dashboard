@@ -251,6 +251,14 @@ If you have questions or need help integrating the product please [contact us](h
 - Copyright 2021 Themesberg (Crafty Dwarf LLC) (https://themesberg.com)
 - Themesberg [license](https://themesberg.com/licensing#mit) (MIT License)
 
+## Deployment
+
+Live URL: https://d138kk433k26ga.cloudfront.net
+
+Deploy: `./scripts/deploy.sh`
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for details.
+
 ## Useful Links
 
 - [React themes](https://themesberg.com/templates/react) from Themesberg
