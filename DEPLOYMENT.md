@@ -15,11 +15,11 @@ description: Deploy Volt React Dashboard to AWS S3 + CloudFront
 Your app is deployed to AWS with a CI/CD pipeline.
 
 Preview URL: https://d138kk433k26ga.cloudfront.net
-Production URL: Will be available after first pipeline run to `main` branch
+Production URL: https://d3hf4vcamec66n.cloudfront.net
 
 Pipeline console: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltDashPipeline/view
 
-Deploy to production: `git push origin main`
+Deploy to production: `git push origin sergeyka/deploy-to-aws2` (pipeline auto-deploys on push)
 Deploy preview: `./scripts/deploy.sh`
 
 AWS Services used: S3, CloudFront, CloudFormation, CodePipeline, CodeBuild, CodeConnections, Lambda, IAM.
@@ -54,7 +54,9 @@ Deployment URL: https://d138kk433k26ga.cloudfront.net
 Status: ✅ Complete
 Pipeline Stack: VoltDashPipelineStack
 Pipeline Name: VoltDashPipeline
-Source Branch: main
+Source Branch: sergeyka/deploy-to-aws2
+Production Stack: VoltDashFrontend-prod
+Production URL: https://d3hf4vcamec66n.cloudfront.net
 CodeConnection ARN: arn:aws:codeconnections:us-east-1:625164594347:connection/a670031e-870f-4947-b5bd-dfc7412ee588
 ```
 
@@ -88,9 +90,17 @@ aws cloudfront create-invalidation --distribution-id [id] --paths "/*"
 ```
 AWS Region: us-east-1
 AWS Account: 625164594347
+
+# Preview Environment
 CDK Stack: VoltDashFrontend-preview-sergeyka
 CloudFront Distribution: EIWLP4BITMCLO
 S3 Bucket: voltdashfrontend-preview-sergeyka-625164594347
+URL: https://d138kk433k26ga.cloudfront.net
+
+# Production Environment (via Pipeline)
+CDK Stack: VoltDashFrontend-prod
+S3 Bucket: voltdashfrontend-prod-625164594347
+URL: https://d3hf4vcamec66n.cloudfront.net
 ```
 
 ---
