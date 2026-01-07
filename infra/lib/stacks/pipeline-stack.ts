@@ -54,8 +54,7 @@ export class PipelineStack extends cdk.Stack {
     const deployStage = new cdk.Stage(this, "Deploy", {
       env: { account: this.account, region: this.region },
     });
-    new FrontendStack(deployStage, "Frontend", {
-      stackName: "VoltDashFrontend-prod",
+    new FrontendStack(deployStage, "VoltDashFrontend-prod", {
       environment: "prod",
       buildOutputPath: "../build",
     });
