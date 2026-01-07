@@ -3,3 +3,7 @@ build/
 playwright-report/
 test-results/
 .DS_Store
+
+# playwright
+test-results/
+playwright-report/
