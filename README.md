@@ -53,6 +53,7 @@ This product is built using the following widely used technologies:
 * [Quick Start](#quick-start)
 * [Documentation](#documentation)
 * [File Structure](#file-structure)
+* [Deployment](#deployment)
 * [Browser Support](#browser-support)
 * [Resources](#resources)
 * [Upgrade to PRO](#upgrade-to-pro)
@@ -214,6 +215,18 @@ Volt React Dashboard
 └── yarn.lock
 
 ```
+
+## Deployment
+
+This application is deployed to AWS using S3 and CloudFront. For deployment instructions and current deployment status, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+### Quick Deploy
+
+```bash
+./scripts/deploy.sh
+```
+
+This deploys your application to a preview environment. For more deployment options and details, refer to `DEPLOYMENT.md`.
 
 ## Browser Support
 
