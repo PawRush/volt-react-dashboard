@@ -228,6 +228,20 @@ This application is deployed to AWS using S3 and CloudFront. For deployment inst
 
 This deploys your application to a preview environment. For more deployment options and details, refer to `DEPLOYMENT.md`.
 
+### Continuous Deployment with CodePipeline
+
+This application has a CI/CD pipeline configured using AWS CodePipeline. Updates pushed to the `deploy-to-aws-3` branch are automatically deployed to production.
+
+**Pipeline URL:** https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactDashboardPipeline/view
+
+To trigger a deployment, simply push changes to the tracked branch:
+
+```bash
+git push origin deploy-to-aws-3
+```
+
+For more details on the pipeline configuration and deployment process, see `DEPLOYMENT.md`.
+
 ## Browser Support
 
 At present, we officially aim to support the last two versions of the following browsers:
