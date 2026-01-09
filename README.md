@@ -51,6 +51,7 @@ This product is built using the following widely used technologies:
 * [Version](#versions)
 * [Demo](#demo)
 * [Quick Start](#quick-start)
+* [Deployment](#deployment)
 * [Documentation](#documentation)
 * [File Structure](#file-structure)
 * [Browser Support](#browser-support)
@@ -138,6 +139,50 @@ npm run start
 ```
 npm run build
 ```
+
+## Deployment
+
+This application is deployed to AWS using CloudFront and S3, managed by AWS CDK infrastructure code.
+
+### Deploy to AWS
+
+To deploy this application to AWS:
+
+```bash
+./scripts/deploy.sh
+```
+
+This will:
+1. Build the React application
+2. Bootstrap AWS CDK (if needed)
+3. Deploy the infrastructure to AWS
+4. Upload assets to S3
+5. Configure CloudFront CDN
+
+**Deployment URL:** https://d12pmwaaob6jtm.cloudfront.net
+
+**Environment:** `preview-jairosp` (change via command-line argument)
+
+```bash
+# Deploy to different environments
+./scripts/deploy.sh dev                    # Deploy to 'dev' environment
+./scripts/deploy.sh prod                   # Deploy to 'prod' environment
+WITH_ASSETS=false ./scripts/deploy.sh     # Deploy infrastructure only (no asset upload)
+```
+
+**Prerequisites:**
+- AWS CLI configured with credentials
+- Node.js 14+ installed
+- AWS account with permissions to create CloudFormation stacks, S3 buckets, and CloudFront distributions
+
+**Infrastructure:**
+- S3 bucket for hosting static assets
+- CloudFront distribution for global CDN delivery
+- Error responses configured for client-side routing
+- Access logs stored in separate S3 buckets
+- Automatic cache invalidation on deployments
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for additional details, troubleshooting, and production readiness information.
 
 ## Documentation
 
