@@ -13,7 +13,9 @@
     "deploy:preview": "cdk deploy --all --require-approval never --progress events",
     "destroy": "cdk destroy --all",
     "synth": "cdk synth",
-    "diff": "cdk diff"
+    "diff": "cdk diff",
+    "deploy:pipeline": "cdk deploy VoltDashPipelineStack --context codeConnectionArn=arn:aws:codeconnections:us-east-1:002255676568:connection/410abcef-5063-4f37-bc14-c33b97f2943e --context repositoryName=PawRush/volt-react-dashboard --context branchName=deploy-to-aws --require-approval never --progress events",
+    "destroy:pipeline": "cdk destroy VoltDashPipelineStack --context codeConnectionArn=arn:aws:codeconnections:us-east-1:002255676568:connection/410abcef-5063-4f37-bc14-c33b97f2943e"
   },
   "devDependencies": {
     "@types/jest": "^30",
