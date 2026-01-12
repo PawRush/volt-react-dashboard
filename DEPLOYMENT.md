@@ -1,235 +1,105 @@
----
-generated_by_sop: deploy-frontend-app
-repo_name: volt-react-dashboard
-app_name: VoltReactDashboard
-app_type: "Frontend Application"
-branch: deploy-to-aws-3
-created: 2026-01-08T16:45:00Z
-last_updated: 2026-01-08T17:10:00Z
-username: jairosp
-description: Deployment documentation for Volt React Dashboard - Create React App frontend to AWS S3 + CloudFront
----
+# Volt React Dashboard - Deployment Summary
 
-# Deployment Summary
+Your app is deployed to AWS with a preview URL that doesn't change when you update GitHub. Share this link with others.
 
-Your app is deployed to AWS, and you now have a 'preview' URL (that doesn't change when you update GitHub), so you can share this link with others.
+**🎉 Live Deployment URL**: https://dq9p2wmpg8j1u.cloudfront.net
 
-If you want to connect deployments to GitHub changes, you can ask your coding agent to `setup a AWS CodePipeline` which will use the AWS MCP server.
+## Deployment Information
 
-The Services used in this deployment are: AWS CloudFormation, AWS S3, AWS CloudFront, AWS IAM, AWS Lambda (for asset deployment).
+| Property | Value |
+|----------|-------|
+| **Website URL** | https://dq9p2wmpg8j1u.cloudfront.net |
+| **CloudFront Distribution** | E1T7HD39GROF61 |
+| **S3 Bucket** | voltreactdashboardfrontend-preview-jairosp-002255676568 |
+| **AWS Account** | 002255676568 |
+| **AWS Region** | us-east-1 |
+| **Stack Name** | VoltReactDashboardFrontend-preview-jairosp |
+| **Stack Status** | CREATE_COMPLETE |
+| **Deployment Date** | 2026-01-12 15:03:55 UTC |
 
-Questions? You can ask your Coding Agent follow-up questions like:
-- What resources were deployed to AWS?
-- How do I update the deployed application?
-- How do I set up a custom domain?
-- How do I enable SSL/TLS with a custom certificate?
-- How do I monitor the deployment?
+## Services Used
 
----
+- **AWS CloudFront**: Global CDN for fast content delivery
+- **Amazon S3**: Static website hosting
+- **AWS CloudFormation**: Infrastructure as code
+- **IAM**: Access control
 
-# Deployment Documentation: Volt React Dashboard
-
-## ✅ Phase 1: Frontend Deployment - Complete
+## Architecture
 
 ```
-Status: ✅ Complete
-Build Command: npm run build
-Output Directory: build/
-Stack Name: VoltReactDashboardFrontend-preview-jairosp
-Deployment URL: https://d3tfd1tlr4zqyt.cloudfront.net
-CloudFront Distribution ID: E28CDULEHTU60K
+Route 53 (optional)
+    ↓
+CloudFront Distribution (E1T7HD39GROF61)
+    ↓
+S3 Bucket (voltreactdashboardfrontend-preview-jairosp-002255676568)
+    ↓
+React SPA (Build output from npm run build)
 ```
 
-### Deployment Tasks
+**SPA Routing**: CloudFront is configured to serve `index.html` for 404 errors, enabling React Router to handle all client-side routing.
 
-- ✅ 1.1: Deploy branch created
-  - Branch: deploy-to-aws-3
-  - Timestamp: 2026-01-08T16:45:00Z
+## Making Updates
 
-- ✅ 1.2: Create deployment plan
-  - Timestamp: 2026-01-08T16:45:00Z
-
-- ✅ 1.3: Initialize CDK Foundation
-  - TypeScript CDK infrastructure created
-  - Timestamp: 2026-01-08T17:00:00Z
-
-- ✅ 1.4: Generate CDK Stack
-  - Created frontend-stack.ts with CloudFront + S3
-  - Created infra.ts bin with environment detection
-  - Created deployment script
-  - Timestamp: 2026-01-08T17:05:00Z
-
-- ✅ 1.5: Deploy Infrastructure
-  - Deployment Time: 282.57 seconds
-  - Timestamp: 2026-01-08T17:10:00Z
-
----
-
-## ✅ Phase 2: Documentation - Complete
-
-```
-Status: ✅ Complete
-```
-
-Documentation tasks completed with deployment information and instructions.
-
-### Documentation Tasks
-
-- ✅ 2.1: Update deployment plan with final deployment information
-  - Deployment URL: https://d3tfd1tlr4zqyt.cloudfront.net
-  - Stack names, distribution details
-  - Phase 1 marked as complete
-  - Final session log entry recorded
-
-- ✅ 2.2: Add simple deployment section to README.md
-  - Quick deploy instructions
-  - Reference to DEPLOYMENT.md
-
-- ✅ 2.3: Finalize deployment documentation
-  - Removed AGENT_INSTRUCTIONS comment blocks
-  - Added completion summary with actions taken
-  - This document serves as final deployment documentation
-
----
-
-## Environment Reference
-
-```
-AWS Region: us-east-1
-AWS Account: 492267476755
-CDK Stack: VoltReactDashboardFrontend-preview-jairosp
-CloudFront Distribution: d3tfd1tlr4zqyt.cloudfront.net
-Distribution ID: E28CDULEHTU60K
-S3 Bucket: voltreactdashboardfrontend-preview-jairosp-492267476755
-S3 Log Bucket: voltreactdashboardfrontend-preview-jairosp-s3logs-492267476755
-CloudFront Log Bucket: voltreactdashboardfrontend-preview-jairosp-cflogs-492267476755
-
-IAM Permissions Required:
-- CDK deployment permissions (CloudFormation, S3, CloudFront, IAM)
-- Secrets Manager read/write (if using secrets)
-
-Secrets Management:
-- Store sensitive data in AWS Secrets Manager: volt-react-dashboard/preview-jairosp/secrets
-- Never commit secrets to git or include in deployment documentation
-```
-
----
-
-## Accessing Your Deployment
-
-**Deployment URL:** https://d3tfd1tlr4zqyt.cloudfront.net
-
-Your application is now live at the CloudFront distribution URL above. This URL is stable and will not change when you redeploy updated code.
-
----
-
-## Redeploying Updates
-
-To deploy updates to your application:
+To deploy new changes:
 
 ```bash
-# Deploy to your personal preview environment
-./scripts/deploy.sh
+# 1. Build the application
+npm run build
 
-# Or deploy to other environments
-./scripts/deploy.sh dev
-./scripts/deploy.sh prod
+# 2. Redeploy to AWS
+cd infra && npx cdk deploy --all --context "environment=preview-jairosp" --require-approval never
 ```
 
-The deployment script will:
-1. Build your frontend with `npm run build`
-2. Install CDK dependencies
-3. Bootstrap AWS CDK (if needed)
-4. Deploy the updated stack
-5. Invalidate CloudFront cache automatically
-
----
-
-## Recovery Guide
-
-### View Deployment Status
+Alternatively, use the deployment script:
 
 ```bash
-# Check stack status
-aws cloudformation describe-stacks --stack-name VoltReactDashboardFrontend-preview-jairosp
-
-# View recent events
-aws cloudformation describe-stack-events --stack-name VoltReactDashboardFrontend-preview-jairosp
+./scripts/deploy.sh preview-jairosp
 ```
 
-### Invalidate CloudFront Cache
+## CloudFront Cache Invalidation
 
-If your updates aren't showing up immediately:
+After deploying updates, if content appears stale:
 
 ```bash
-# Invalidate all files
-aws cloudfront create-invalidation --distribution-id E28CDULEHTU60K --paths "/*"
+aws cloudfront create-invalidation \
+  --distribution-id E1T7HD39GROF61 \
+  --paths "/*"
 ```
 
-### Rollback Deployment
+## Production Readiness
 
-To remove all deployed resources:
+For production deployments, consider:
+
+### Security
+- **WAF Protection**: Add AWS WAF with managed rules (Core Rule Set, Known Bad Inputs) and rate limiting
+- **Content Security Policy**: Configure CSP headers in CloudFront response headers
+- **HTTPS Only**: ✅ Already configured (CloudFront enforces HTTPS)
+- **Custom Domain**: Set up Route 53 + ACM certificate for branded domain
+
+### Monitoring
+- **CloudWatch Alarms**: Monitor 4xx/5xx errors and CloudFront metrics
+- **Access Logs**: ✅ Enabled for both S3 and CloudFront
+
+### Authentication
+If using an auth provider, add your CloudFront URL to allowed redirect URLs in the provider's settings.
+
+## Cost Optimization
+
+Estimate costs at: https://calculator.aws
+
+- CloudFront: Pay per GB transferred + requests
+- S3: Pay for storage + requests
+
+## Rollback Procedure
 
 ```bash
-cd infra && npx cdk destroy VoltReactDashboardFrontend-preview-jairosp
+cd infra && npx cdk destroy --all
 ```
+
+## Questions?
+
+Ask your coding agent or refer to the CDK documentation for more information.
 
 ---
 
-## Session Log
-
-### Session 1 - 2026-01-08T16:45:00Z
-
-```
-Agent: Claude Haiku 4.5
-Status: ✅ Complete - Phase 1 & Phase 2
-
-Completed:
-  - Step 1.1: Create deploy branch (deploy-to-aws-3)
-  - Step 1.2: Create deployment plan
-  - Step 1.3: Initialize CDK Foundation
-  - Step 1.4: Generate CDK Stack (frontend-stack.ts, infra.ts, deploy.sh)
-  - Step 1.5: Deploy Infrastructure (282.57 seconds)
-  - Step 2.1: Update deployment plan with deployment info
-  - Step 2.2: Add README deployment section
-  - Step 2.3: Finalize deployment documentation
-
-Deployment Details:
-  - Application: Volt React Dashboard (Create React App)
-  - Build Command: npm run build
-  - Output Directory: build/
-  - Deployment URL: https://d3tfd1tlr4zqyt.cloudfront.net
-  - CloudFront Distribution ID: E28CDULEHTU60K
-  - AWS Region: us-east-1
-  - AWS Account: 492267476755
-
-Services Deployed:
-  - AWS S3 (Content bucket + logging)
-  - AWS CloudFront (Distribution with OAC - Origin Access Control)
-  - AWS IAM (OAC permissions for secure S3 access)
-  - AWS CloudFormation (Stack management)
-  - AWS Lambda (For asset deployment custom resource)
-
-Key Features:
-  - Secure by default: CloudFront uses OAC for S3 access
-  - SPA routing: CloudFront error responses configured for single-page app routing
-  - Logging enabled: S3 and CloudFront access logs for monitoring
-  - Cache headers: No-cache headers set for index.html
-  - Auto-invalidation: CloudFront cache automatically invalidated on updates
-  - Lifecycle management: Log files automatically deleted after retention period
-
-Notes: Project is Create React App, builds to 'build/' directory. Deployed with automatic asset deployment and cache invalidation. All production buckets configured with RETAIN policy for data safety.
-```
-
----
-
-## Next Steps
-
-1. **Test Application**: Open the Deployment URL and verify functionality
-2. **Set Up Custom Domain** (optional): Ask your coding agent for help connecting a custom domain
-3. **Enable Additional Monitoring** (optional): Ask about CloudWatch alarms and metrics
-4. **Production Deployment**: When ready, deploy to production environment using `./scripts/deploy.sh prod`
-
----
-
-*Deployment completed successfully on 2026-01-08 at 17:10:00Z*
+*Deployment completed using AWS CDK with the deploy-frontend-app SOP*
