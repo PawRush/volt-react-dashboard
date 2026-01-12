@@ -16,8 +16,8 @@
     "destroy": "cdk destroy --all",
     "synth": "cdk synth",
     "diff": "cdk diff",
-    "deploy:pipeline": "cdk deploy VoltReactDashboardPipelineStack --context codeConnectionArn=arn:aws:codeconnections:us-east-1:492267476755:connection/b723259a-c57f-4245-9416-a59676b72429 --context repositoryName=themesberg/volt-react-dashboard --context branchName=deploy-to-aws-3 --require-approval never --progress events",
-    "destroy:pipeline": "cdk destroy VoltReactDashboardPipelineStack --context codeConnectionArn=arn:aws:codeconnections:us-east-1:492267476755:connection/b723259a-c57f-4245-9416-a59676b72429"
+    "deploy:pipeline": "cdk deploy VoltReactDashboardPipelineStack --context codeConnectionArn=arn:aws:codeconnections:us-east-1:002255676568:connection/410abcef-5063-4f37-bc14-c33b97f2943e --context repositoryName=PawRush/volt-react-dashboard --context branchName=deploy-to-aws-3 --require-approval never --progress events",
+    "destroy:pipeline": "cdk destroy VoltReactDashboardPipelineStack --context codeConnectionArn=arn:aws:codeconnections:us-east-1:002255676568:connection/410abcef-5063-4f37-bc14-c33b97f2943e"
   },
   "devDependencies": {
     "@types/jest": "^30",
