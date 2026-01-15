@@ -33,6 +33,12 @@ Get started with 10 beautiful example pages for a dashboard which is based on th
 
 Every component, plugin and getting started is thoroughly documented on our [online documentation](https://demo.themesberg.com/volt-react-dashboard/#/documentation/quick-start).
 
+## Deployment
+
+This application is deployed to AWS using CloudFront and S3. See [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment status, URLs, and troubleshooting information.
+
+Deployment command: `./scripts/deploy.sh`
+
 ## Tutorial
 
 We also [wrote a tutorial](https://themesberg.com/blog/tutorial/react-dashboard) on how you can install the project, explore the UI elements, create a new page, customize the Sass variables and upload the production code to the server.
