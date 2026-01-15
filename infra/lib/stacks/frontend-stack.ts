@@ -42,36 +42,9 @@ export class FrontendStack extends cdk.Stack {
       insertHttpSecurityHeaders: true
     });
 
-    // Error responses for SPA routing
-    const errorResponses: cloudfront.ErrorResponse[] = [
-      { httpStatus: 403, responseHttpStatus: 200, responsePagePath: "/index.html", ttl: cdk.Duration.minutes(5) },
-      { httpStatus: 404, responseHttpStatus: 200, responsePagePath: "/index.html", ttl: cdk.Duration.minutes(5) },
-    ];
-
     // Update distribution properties
     const distribution = cloudfrontToS3.cloudFrontWebDistribution!;
-    const bucket = cloudfrontToS3.s3Bucket!;
-
-    // Add error responses to the default behavior
-    const defaultBehavior = distribution.addBehavior(
-      "/*",
-      cloudfrontToS3.s3Origin!,
-      {
-        compress: true,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
-      }
-    );
-
-    // Update distribution with error responses by recreating it
-    const distConfig = distribution.node.defaultChild as any;
-    if (distConfig && distConfig.distributionConfig) {
-      distConfig.distributionConfig.defaultCacheBehavior.errorResponses = errorResponses.map(er => ({
-        errorCode: er.httpStatus,
-        responseCode: er.responseHttpStatus,
-        responsePagePath: er.responsePagePath,
-        errorCachingMinTtl: er.ttl?.toSeconds(),
-      }));
-    }
+    const bucket = cloudfrontToS3.s3Bucket!
 
     // Deploy website files
     new s3deploy.BucketDeployment(this, "DeployWebsite", {
