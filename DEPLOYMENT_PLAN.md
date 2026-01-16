@@ -17,12 +17,12 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 ## Phase 1: Gather Context and Configure
 - [x] Step 0: Inform User of Execution Flow
 - [x] Step 1: Create Deployment Plan
-- [...] Step 2: Detect Existing Infrastructure
+- [x] Step 2: Detect Existing Infrastructure
   - [x] 2.1: Detect stacks and frontend
   - [x] 2.2: Detect app name and git repository
   - [x] 2.3: Determine quality checks
-  - [ ] 2.4: User confirmation
-  - [ ] 2.5: Create CodeConnection
+  - [x] 2.4: User confirmation
+  - [x] 2.5: Create CodeConnection
 
 ## Phase 2: Build and Deploy Pipeline
 - [ ] Step 3: Create CDK Pipeline Stack
@@ -47,7 +47,7 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 - **Framework**: Create React App (React SPA)
 - **Existing Stack**: DemoVoltReactFrontend-preview-sergeyka
 - **Pipeline Stack**: DemoVoltReactPipelineStack (pending)
-- **CodeConnection ARN**: (pending)
+- **CodeConnection ARN**: arn:aws:codeconnections:us-east-1:126593893432:connection/22d78f95-9da1-4de3-a9d5-c511e9807894
 - **Pipeline URL**: (pending)
 
 ## Recovery Guide
