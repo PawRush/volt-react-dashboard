@@ -10,29 +10,32 @@ last_updated: 2025-01-16
 
 # Deployment Summary
 
-Your app is deployed to AWS with a 'preview' URL that doesn't change when you update GitHub. Share this link with others.
+Your app has a CodePipeline pipeline. Changes on GitHub branch `demo-deploy-to-aws` will be deployed automatically.
 
-To connect deployments to GitHub changes, ask your coding agent to `setup a AWS CodePipeline`.
+Pipeline console: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/DemoVoltReactPipeline/view
 
-Services used: CloudFront, S3, CloudFormation, IAM
+Services used: CodePipeline, CodeBuild, CodeConnections, CloudFront, S3, CloudFormation, IAM
 
 Questions? Ask your Coding Agent:
- - What resources were deployed to AWS?
- - How do I update my deployment?
+ - How can I change the source branch?
+ - What's the difference between preview and prod URLs?
 
 ## Quick Commands
 
 ```bash
-# View deployment status
-aws cloudformation describe-stacks --stack-name "DemoVoltReactFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text --no-cli-pager
+# View pipeline status
+aws codepipeline get-pipeline-state --name "DemoVoltReactPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table
+
+# View build logs
+aws logs tail "/aws/codebuild/DemoVoltReactPipelineStack-PipelineBuildSynthCdkBuildProject" --follow
+
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "DemoVoltReactPipeline"
 
 # Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id "E1OUBLYITFGJ93" --paths "/*" --no-cli-pager
+aws cloudfront create-invalidation --distribution-id "E1OUBLYITFGJ93" --paths "/*"
 
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://demovoltreactfrontend-previ-cftos3s3bucketcae9f2be-gxvyfklfl7sa/" --recursive | tail -20
-
-# Redeploy
+# Redeploy preview
 ./scripts/deploy.sh
 ```
 

@@ -25,14 +25,14 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
   - [x] 2.5: Create CodeConnection
 
 ## Phase 2: Build and Deploy Pipeline
-- [ ] Step 3: Create CDK Pipeline Stack
-- [ ] Step 4: CDK Bootstrap
-- [ ] Step 5: Deploy Pipeline
-  - [ ] 5.1: Push to remote
-  - [ ] 5.2: Authorize CodeConnection
-  - [ ] 5.3: Deploy pipeline stack
-  - [ ] 5.4: Trigger pipeline
-- [ ] Step 6: Monitor Pipeline
+- [x] Step 3: Create CDK Pipeline Stack
+- [x] Step 4: CDK Bootstrap
+- [x] Step 5: Deploy Pipeline
+  - [x] 5.1: Push to remote
+  - [x] 5.2: Authorize CodeConnection
+  - [x] 5.3: Deploy pipeline stack
+  - [x] 5.4: Trigger pipeline
+- [...] Step 6: Monitor Pipeline
 
 ## Phase 3: Documentation
 - [ ] Step 7: Finalize Deployment Plan
@@ -48,7 +48,8 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 - **Existing Stack**: DemoVoltReactFrontend-preview-sergeyka
 - **Pipeline Stack**: DemoVoltReactPipelineStack (pending)
 - **CodeConnection ARN**: arn:aws:codeconnections:us-east-1:126593893432:connection/22d78f95-9da1-4de3-a9d5-c511e9807894
-- **Pipeline URL**: (pending)
+- **Pipeline URL**: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/DemoVoltReactPipeline/view
+- **Pipeline ARN**: arn:aws:codepipeline:us-east-1:126593893432:DemoVoltReactPipeline
 
 ## Recovery Guide
 

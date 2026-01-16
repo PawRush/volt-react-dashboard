@@ -248,11 +248,15 @@ If you have questions or need help integrating the product please [contact us](h
 
 ## Deployment
 
-Deployed at: https://d1kigwkv9obx5s.cloudfront.net, using the [deploy-frontend-app](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html) Agent Standard Operation Procedure from the AWS MCP.
+Deployed at: https://d1kigwkv9obx5s.cloudfront.net
 
-Deployment command: `./scripts/deploy.sh`
+## Pipeline
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
+Pipeline: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/DemoVoltReactPipeline/view
+
+Deploy: `git push origin demo-deploy-to-aws`
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details. Created with the [deploy-codepipeline](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html) Agent Standard Operation Procedure from the AWS MCP.
 
 ## Licensing
 
