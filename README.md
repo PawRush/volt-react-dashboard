@@ -246,6 +246,14 @@ We use GitHub Issues as the official bug tracker for Volt React Dashboard. Here 
 
 If you have questions or need help integrating the product please [contact us](https://themesberg.com/contact) instead of opening an issue.
 
+## Deployment
+
+Deployed at: https://d1kigwkv9obx5s.cloudfront.net
+
+Deployment command: `./scripts/deploy.sh`
+
+See [DEPLOYMENT_PLAN.md](./DEPLOYMENT_PLAN.md) for full details.
+
 ## Licensing
 
 - Copyright 2021 Themesberg (Crafty Dwarf LLC) (https://themesberg.com)
