@@ -1,57 +1,71 @@
-# Deployment Plan: DemoVoltReact
+---
+sop_name: deploy-codepipeline
+repo_name: volt-react-dashboard
+app_name: DemoVoltReact
+app_type: CI/CD Pipeline
+branch: demo-deploy-to-aws
+created: 2025-01-16
+last_updated: 2025-01-16
+---
 
-## Overview
-- **Application**: Volt React Dashboard (React SPA)
-- **Framework**: Create React App
-- **Package Manager**: npm
-- **Build Output**: `build/`
-- **Target**: AWS S3 + CloudFront
+# Deployment Plan: DemoVoltReact Pipeline
 
-## Execution Progress
+Coding Agents should follow this Deployment Plan, and validate previous progress if picking up the Deployment in a new coding session.
 
-### Phase 1: Gather Context and Configure
+**IMPORTANT**: Update this plan after EACH step completes. Mark the step `[x]` and update `last_updated` timestamp.
+
+## Phase 1: Gather Context and Configure
 - [x] Step 0: Inform User of Execution Flow
 - [x] Step 1: Create Deployment Plan
-- [x] Step 2: Create Deploy Branch (`demo-deploy-to-aws`)
-- [x] Step 3: Detect Build Configuration
-- [x] Step 4: Validate Prerequisites
-- [x] Step 5: Revisit Deployment Plan
+- [...] Step 2: Detect Existing Infrastructure
+  - [x] 2.1: Detect stacks and frontend
+  - [x] 2.2: Detect app name and git repository
+  - [x] 2.3: Determine quality checks
+  - [ ] 2.4: User confirmation
+  - [ ] 2.5: Create CodeConnection
 
-### Phase 2: Build CDK Infrastructure
-- [x] Step 6: Initialize CDK Foundation
-- [x] Step 7: Generate CDK Stack
-- [x] Step 8: Create Deployment Script
-- [x] Step 9: Validate CDK Synth
+## Phase 2: Build and Deploy Pipeline
+- [ ] Step 3: Create CDK Pipeline Stack
+- [ ] Step 4: CDK Bootstrap
+- [ ] Step 5: Deploy Pipeline
+  - [ ] 5.1: Push to remote
+  - [ ] 5.2: Authorize CodeConnection
+  - [ ] 5.3: Deploy pipeline stack
+  - [ ] 5.4: Trigger pipeline
+- [ ] Step 6: Monitor Pipeline
 
-### Phase 3: Deploy and Validate
-- [x] Step 10: Execute CDK Deployment
-- [x] Step 11: Validate CloudFormation Stack
+## Phase 3: Documentation
+- [ ] Step 7: Finalize Deployment Plan
+- [ ] Step 8: Update README.md
 
-### Phase 4: Update Documentation
-- [x] Step 12: Finalize Deployment Plan
-- [x] Step 13: Update README.md
+## Deployment Info
 
-## Configuration Detected
+- **Repository**: PawRush/volt-react-dashboard
+- **Branch**: demo-deploy-to-aws
+- **Package Manager**: npm
+- **Build Output**: build/
 - **Framework**: Create React App (React SPA)
-- **Build Command**: `npm run build`
-- **Output Directory**: `build/`
-- **Base Path**: `/` (root)
-- **Entry Point**: `index.html`
-- **CloudFront Config**: SPA with error responses (403/404 → /index.html)
+- **Existing Stack**: DemoVoltReactFrontend-preview-sergeyka
+- **Pipeline Stack**: DemoVoltReactPipelineStack (pending)
+- **CodeConnection ARN**: (pending)
+- **Pipeline URL**: (pending)
 
-## Deployment Details
-- **Stack Name**: DemoVoltReactFrontend-preview-sergeyka
-- **CloudFront URL**: https://d1kigwkv9obx5s.cloudfront.net
-- **Distribution ID**: E1OUBLYITFGJ93
-- **S3 Bucket**: demovoltreactfrontend-previ-cftos3s3bucketcae9f2be-gxvyfklfl7sa
+## Recovery Guide
 
-## Issues
-(none)
+```bash
+# Rollback pipeline
+cd infra && npx cdk destroy "DemoVoltReactPipelineStack" --context codeConnectionArn=<ARN>
+
+# Delete CodeConnection
+aws codeconnections delete-connection --connection-arn "<ARN>" --no-cli-pager
+```
+
+## Issues Encountered
+
+None.
 
 ## Session Log
-- Started deployment process
-- Created branch: demo-deploy-to-aws
-- Built React app successfully
-- Initialized CDK infrastructure
-- Deployed to AWS S3 + CloudFront
-- Verified site is accessible
+
+### Session 1 - 2025-01-16
+Progress: Starting pipeline setup
+Next: User confirmation of detected infrastructure
