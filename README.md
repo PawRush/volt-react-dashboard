@@ -248,11 +248,11 @@ If you have questions or need help integrating the product please [contact us](h
 
 ## Deployment
 
-Deployed at: https://d1kigwkv9obx5s.cloudfront.net
+Deployed at: https://d1kigwkv9obx5s.cloudfront.net, using the [deploy-frontend-app](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html) Agent Standard Operation Procedure from the AWS MCP.
 
 Deployment command: `./scripts/deploy.sh`
 
-See [DEPLOYMENT_PLAN.md](./DEPLOYMENT_PLAN.md) for full details.
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
 
 ## Licensing
 
