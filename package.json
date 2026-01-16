@@ -14,7 +14,6 @@
     "themesberg"
   ],
   "license": "MIT",
-  "homepage": "https://demo.themesberg.com/volt-react-dashboard",
   "bugs": {
     "url": "https://github.com/themesberg/volt-react-dashboard/issues"
   },
@@ -80,6 +79,6 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "sass": "^1.32.13"
+    "sass": "1.32.13"
   }
 }
