@@ -10,13 +10,14 @@ last_updated: 2026-01-21T20:32:00Z
 
 # Deployment Summary
 
-Your app is deployed to AWS! Preview URL: https://d1m14svf2mtk80.cloudfront.net
+Your app has a CodePipeline pipeline. Changes on GitHub branch `deploy-to-aws` will be deployed automatically. This is managed by CloudFormation stack VoltReactPipelineStack.
 
-**Next Step: Automate Deployments**
+Pipeline console: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactPipeline/view
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
+Preview URL: https://d1m14svf2mtk80.cloudfront.net (manual deployment)
+Production URL: Will be available after first pipeline run completes
 
-Services used: CloudFront, S3, CloudFormation, IAM
+Services used: CodePipeline, CodeBuild, CodeConnections, CloudFront, S3, CloudFormation, IAM
 
 Questions? Ask your Coding Agent:
  - What resources were deployed to AWS?
@@ -25,16 +26,22 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VoltReactPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table
+
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VoltReactPipeline"
+
+# View production deployment status
+aws cloudformation describe-stacks --stack-name "VoltReactFrontend-prod" --query 'Stacks[0].StackStatus' --output text
+
+# View preview deployment status
 aws cloudformation describe-stacks --stack-name "VoltReactFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text
 
-# Invalidate CloudFront cache
+# Invalidate CloudFront cache (preview)
 aws cloudfront create-invalidation --distribution-id "ESZ3SUUD3VPQ5" --paths "/*"
 
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://voltreactfrontend-preview-cftos3cloudfrontloggingb-huluio1t4nal/" --recursive | tail -20
-
-# Redeploy
+# Manual redeploy (preview)
 ./scripts/deploy.sh
 ```
 
@@ -113,3 +120,14 @@ Status: Deployment complete
 - Deployed to AWS CloudFront + S3
 - Validated all resources and accessibility
 - Application live at https://d1m14svf2mtk80.cloudfront.net
+
+### Session 2 - 2026-01-21T20:33:00Z - 2026-01-21T20:50:00Z
+Agent: Claude Sonnet 4.5
+Progress: Complete pipeline deployment
+Status: Pipeline deployed and running
+- Created CDK Pipeline Stack with quality checks (lint, test)
+- Deployed VoltReactPipelineStack to AWS
+- Pipeline automatically triggered on push to deploy-to-aws branch
+- All stages completed successfully: Source, Build, UpdatePipeline, Assets
+- Deploy stage running (deploying VoltReactFrontend-prod)
+- Pipeline URL: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactPipeline/view
