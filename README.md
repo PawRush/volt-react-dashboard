@@ -9,6 +9,14 @@
 
 Volt React is a free and open source admin dashboard template built in React.js and based on the latest version of the Bootstrap 5 CSS framework. It features over 100 UI elements, plugins, and example based built with React components.
 
+## Deployment
+
+Deployed at: https://d1m14svf2mtk80.cloudfront.net, using the [deploy-frontend-app] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
+
+Deployment command: `./scripts/deploy.sh`
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
+
 ## Powered by React.js
 
 Volt React is an extension of the popular [react-bootstrap](https://react-bootstrap.github.io/) library and it is based on the newest version of Bootstrap 5. 
