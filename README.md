@@ -11,11 +11,13 @@ Volt React is a free and open source admin dashboard template built in React.js 
 
 ## Deployment
 
-Deployed at: https://d1m14svf2mtk80.cloudfront.net, using the [deploy-frontend-app] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
+Automated deployments via AWS CodePipeline. Push to `deploy-to-aws` branch triggers automatic deployment.
 
-Deployment command: `./scripts/deploy.sh`
+Pipeline: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactPipeline/view
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
+Deploy: `git push origin deploy-to-aws`
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details. Created with the [setup-pipeline] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
 
 ## Powered by React.js
 
