@@ -25,8 +25,8 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
   - [x] 2.5: Use Existing CodeConnection
 
 ## Phase 2: Build and Deploy Pipeline
-- [ ] Step 3: Create CDK Pipeline Stack
-- [ ] Step 4: CDK Bootstrap
+- [x] Step 3: Create CDK Pipeline Stack
+- [x] Step 4: CDK Bootstrap
 - [ ] Step 5: Deploy Pipeline
   - [ ] 5.1: Push to remote
   - [ ] 5.2: Verify CodeConnection authorization
