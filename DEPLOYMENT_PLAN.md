@@ -1,14 +1,14 @@
 ---
-sop_name: deploy-frontend-app
+sop_name: setup-pipeline
 repo_name: volt-react-dashboard
 app_name: VoltReact
-app_type: Frontend Application
+app_type: CI/CD Pipeline
 branch: deploy-to-aws
-created: 2026-01-21T20:21:00Z
-last_updated: 2026-01-21T20:21:00Z
+created: 2026-01-21T20:33:00Z
+last_updated: 2026-01-21T20:33:00Z
 ---
 
-# Deployment Plan: Volt React Dashboard
+# Deployment Plan: AWS CodePipeline Setup
 
 Coding Agents should follow this Deployment Plan, and validate previous progress if picking up the Deployment in a new coding session.
 
@@ -17,45 +17,47 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 ## Phase 1: Gather Context and Configure
 - [x] Step 0: Inform User of Execution Flow
 - [x] Step 1: Create Deployment Plan
-- [x] Step 2: Create Deploy Branch
-- [x] Step 3: Detect Build Configuration
-- [x] Step 4: Validate Prerequisites
-- [x] Step 5: Revisit Deployment Plan
+- [x] Step 2: Detect Existing Infrastructure
+  - [x] 2.1: Detect stacks and frontend
+  - [x] 2.2: Detect app name and git repository
+  - [x] 2.3: Determine quality checks
+  - [x] 2.4: User confirmation
+  - [x] 2.5: Use Existing CodeConnection
 
-## Phase 2: Build CDK Infrastructure
-- [x] Step 6: Initialize CDK Foundation
-- [x] Step 7: Generate CDK Stack
-- [x] Step 8: Create Deployment Script
-- [x] Step 9: Validate CDK Synth
+## Phase 2: Build and Deploy Pipeline
+- [ ] Step 3: Create CDK Pipeline Stack
+- [ ] Step 4: CDK Bootstrap
+- [ ] Step 5: Deploy Pipeline
+  - [ ] 5.1: Push to remote
+  - [ ] 5.2: Verify CodeConnection authorization
+  - [ ] 5.3: Deploy pipeline stack
+  - [ ] 5.4: Trigger pipeline
+- [ ] Step 6: Monitor Pipeline
 
-## Phase 3: Deploy and Validate
-- [x] Step 10: Execute CDK Deployment
-- [x] Step 11: Validate CloudFormation Stack
+## Phase 3: Documentation
+- [ ] Step 7: Finalize Deployment Plan
+- [ ] Step 8: Update README.md
 
-## Phase 4: Update Documentation
-- [ ] Step 12: Finalize Deployment Plan
-- [ ] Step 13: Update README.md
+## Pipeline Info
 
-## Deployment Info
-
-- Deployment URL: https://d1m14svf2mtk80.cloudfront.net
-- Stack name: VoltReactFrontend-preview-sergeyka
-- Distribution ID: ESZ3SUUD3VPQ5
-- S3 bucket name: voltreactfrontend-preview-s-cftos3s3bucketcae9f2be-cvumnhygpw0v
-- S3 log bucket: voltreactfrontend-preview-cftos3s3loggingbucket64b-y19wkts4dh8i
-- CloudFront log bucket: voltreactfrontend-preview-cftos3cloudfrontloggingb-huluio1t4nal
+- Pipeline name: (after creation)
+- Pipeline ARN: (after creation)
+- CodeConnection ARN: arn:aws:codeconnections:us-east-1:126593893432:connection/c140aa0c-7407-42c9-aa4b-7c81f5faf40b
+- Repository: PawRush/volt-react-dashboard
+- Branch: deploy-to-aws
+- Quality checks: lint, test
 
 ## Recovery Guide
 
 ```bash
 # Rollback
-cd infra && npx cdk destroy "<StackName>" --force
+cd infra && npx cdk destroy "<PipelineStackName>" --force
 
-# Redeploy
-./scripts/deploy.sh
+# Manual pipeline deletion
+aws codepipeline delete-pipeline --name "<pipeline-name>"
 
-# Manual CloudFront invalidation
-aws cloudfront create-invalidation --distribution-id "<ID>" --paths "/*"
+# View pipeline status
+aws codepipeline get-pipeline-state --name "<pipeline-name>"
 ```
 
 ## Issues Encountered
@@ -64,7 +66,7 @@ None.
 
 ## Session Log
 
-### Session 1 - 2026-01-21T20:21:00Z
+### Session 1 - 2026-01-21T20:33:00Z
 Agent: Claude Sonnet 4.5
-Progress: Created deployment plan
-Next: Create deploy branch
+Progress: Created pipeline deployment plan
+Next: Detect existing infrastructure
