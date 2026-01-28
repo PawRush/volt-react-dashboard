@@ -29,8 +29,8 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 - [x] Step 9: Validate CDK Synth
 
 ## Phase 3: Deploy and Validate
-- [ ] Step 10: Execute CDK Deployment
-- [ ] Step 11: Validate CloudFormation Stack
+- [x] Step 10: Execute CDK Deployment
+- [x] Step 11: Validate CloudFormation Stack
 
 ## Phase 4: Update Documentation
 - [ ] Step 12: Finalize Deployment Plan
@@ -49,12 +49,12 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Deployment Info
 
-- Deployment URL: [after completion]
-- Stack name: [after creation]
-- Distribution ID: [after creation]
-- S3 bucket name: [after creation]
-- CloudFront log bucket: [after creation]
-- S3 log bucket: [after creation]
+- Deployment URL: https://d142hvbess5zov.cloudfront.net
+- Stack name: VoltReactFrontend-preview-sergeyka
+- Distribution ID: E3BMUMJDN2QYQL
+- S3 bucket name: voltreactfrontend-preview-s-cftos3s3bucketcae9f2be-opk2b6eq56c9
+- CloudFront log bucket: voltreactfrontend-preview-cftos3cloudfrontloggingb-pr6r7sihhia6
+- S3 log bucket: voltreactfrontend-preview-cftos3s3loggingbucket64b-xcxkacm7wtj3
 
 ## Recovery Guide
 
