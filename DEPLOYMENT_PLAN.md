@@ -36,6 +36,14 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 - [x] Step 12: Finalize Deployment Plan
 - [x] Step 13: Update README.md
 
+## Phase 5: Pipeline Setup
+- [x] Step 14: Detect Existing Infrastructure
+- [ ] Step 15: Create CDK Pipeline Stack
+- [ ] Step 16: CDK Bootstrap
+- [ ] Step 17: Deploy Pipeline
+- [ ] Step 18: Monitor Pipeline
+- [ ] Step 19: Update Documentation
+
 ## Build Configuration
 
 - Framework: Create React App (SPA)
@@ -55,6 +63,13 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 - S3 bucket name: voltreactfrontend-preview-s-cftos3s3bucketcae9f2be-opk2b6eq56c9
 - CloudFront log bucket: voltreactfrontend-preview-cftos3cloudfrontloggingb-pr6r7sihhia6
 - S3 log bucket: voltreactfrontend-preview-cftos3s3loggingbucket64b-xcxkacm7wtj3
+
+## Pipeline Configuration
+
+- CodeConnection ARN: arn:aws:codeconnections:us-east-1:126593893432:connection/c140aa0c-7407-42c9-aa4b-7c81f5faf40b
+- Repository: PawRush/volt-react-dashboard
+- Branch: deploy-to-aws-20260128_161953-sergeyka
+- Quality checks: lint (eslint)
 
 ## Recovery Guide
 
