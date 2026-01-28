@@ -38,8 +38,8 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Phase 5: Pipeline Setup
 - [x] Step 14: Detect Existing Infrastructure
-- [ ] Step 15: Create CDK Pipeline Stack
-- [ ] Step 16: CDK Bootstrap
+- [x] Step 15: Create CDK Pipeline Stack
+- [x] Step 16: CDK Bootstrap
 - [ ] Step 17: Deploy Pipeline
 - [ ] Step 18: Monitor Pipeline
 - [ ] Step 19: Update Documentation
