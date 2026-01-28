@@ -12,11 +12,15 @@ completed: 2026-01-28T16:40:00Z
 
 Your app is deployed to AWS! Preview URL: https://d142hvbess5zov.cloudfront.net
 
-**Next Step: Automate Deployments**
+**Production URL**: https://d142hvbess5zov.cloudfront.net (VoltReactFrontend-prod)
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
+**Automated Deployments**
 
-Services used: CloudFront, S3, CloudFormation, IAM
+✅ CodePipeline is now configured! Push to `deploy-to-aws-20260128_161953-sergeyka` branch to trigger automatic deployment.
+
+Pipeline URL: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactPipeline/view
+
+Services used: CloudFront, S3, CloudFormation, IAM, CodePipeline, CodeBuild, CodeConnections
 
 Questions? Ask your Coding Agent:
  - What resources were deployed to AWS?
@@ -25,16 +29,22 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
-aws cloudformation describe-stacks --stack-name "VoltReactFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VoltReactPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table
+
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VoltReactPipeline"
+
+# View build logs
+aws logs tail "/aws/codebuild/VoltReactPipeline-selfupdate" --follow
+
+# View production stack status
+aws cloudformation describe-stacks --stack-name "VoltReactFrontend-prod" --query 'Stacks[0].StackStatus' --output text
 
 # Invalidate CloudFront cache
 aws cloudfront create-invalidation --distribution-id "E3BMUMJDN2QYQL" --paths "/*"
 
-# View CloudFront access logs (last 20)
-aws s3 ls "s3://voltreactfrontend-preview-cftos3cloudfrontloggingb-pr6r7sihhia6/" --recursive | tail -20
-
-# Redeploy
+# Manual preview deployment (not needed with pipeline)
 ./scripts/deploy.sh
 ```
 
@@ -90,12 +100,24 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Deployment Info
 
+### Production
+- Stack name: VoltReactFrontend-prod (deployed via pipeline)
+- Production URL: (will be available after first pipeline run completes)
+
+### Preview Environment
 - Deployment URL: https://d142hvbess5zov.cloudfront.net
 - Stack name: VoltReactFrontend-preview-sergeyka
 - Distribution ID: E3BMUMJDN2QYQL
 - S3 bucket name: voltreactfrontend-preview-s-cftos3s3bucketcae9f2be-opk2b6eq56c9
 - CloudFront log bucket: voltreactfrontend-preview-cftos3cloudfrontloggingb-pr6r7sihhia6
 - S3 log bucket: voltreactfrontend-preview-cftos3s3loggingbucket64b-xcxkacm7wtj3
+
+### Pipeline
+- Pipeline name: VoltReactPipeline
+- Pipeline ARN: arn:aws:codepipeline:us-east-1:126593893432:VoltReactPipeline
+- Pipeline stack: VoltReactPipelineStack
+- Branch trigger: deploy-to-aws-20260128_161953-sergeyka
+- CodeConnection: arn:aws:codeconnections:us-east-1:126593893432:connection/c140aa0c-7407-42c9-aa4b-7c81f5faf40b
 
 ## Recovery Guide
 
