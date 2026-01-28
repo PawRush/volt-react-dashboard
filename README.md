@@ -141,11 +141,15 @@ npm run build
 
 ## Deployment
 
-Deployed at: https://d299mgxjwjwinm.cloudfront.net, using the [deploy-frontend-app] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
+**Automated CI/CD**: Push to `deploy-to-aws-20260128_174824-sergeyka` branch
 
-Deployment command: `./scripts/deploy.sh`
+Pipeline: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactPipeline/view
+
+Manual deployment: `./scripts/deploy.sh`
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
+
+Created with the [setup-pipeline] and [deploy-frontend-app] Agent Standard Operation Procedures from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
 
 ## Documentation
 

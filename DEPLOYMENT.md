@@ -17,13 +17,21 @@ completed: 2026-01-28T18:06:00Z
 
 # Deployment Summary
 
-Your app is deployed to AWS! Preview URL: https://d299mgxjwjwinm.cloudfront.net
+Your app is deployed to AWS with automated CI/CD!
 
-**Next Step: Automate Deployments**
+**Production URL**: https://voltreactfrontend-prod-cftos3s3bucketcae9f2be-[generated].s3-website-us-east-1.amazonaws.com (via pipeline)
+**Preview URL**: https://d299mgxjwjwinm.cloudfront.net (manual deployment)
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
+**Pipeline**: Automated deployments from `deploy-to-aws-20260128_174824-sergeyka` branch
+- Pipeline Console: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactPipeline/view
+- Pipeline ARN: arn:aws:codepipeline:us-east-1:126593893432:VoltReactPipeline
 
-Services used: CloudFront, S3, CloudFormation, IAM
+**How to Deploy**: Push to `deploy-to-aws-20260128_174824-sergeyka` branch
+```bash
+git push origin deploy-to-aws-20260128_174824-sergeyka
+```
+
+Services used: CodePipeline, CodeBuild, CodeConnections, CloudFront, S3, CloudFormation, IAM
 
 Questions? Ask your Coding Agent:
  - What resources were deployed to AWS?
@@ -32,16 +40,22 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VoltReactPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table
+
+# View build logs
+aws logs tail "/aws/codebuild/VoltReactPipelineStack-Synth" --follow
+
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VoltReactPipeline"
+
+# View production stack status
+aws cloudformation describe-stacks --stack-name "VoltReactFrontend-prod" --query 'Stacks[0].StackStatus' --output text
+
+# View preview deployment status
 aws cloudformation describe-stacks --stack-name "VoltReactFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text
 
-# Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id "EP6TGW9KA6OWP" --paths "/*"
-
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://voltreactfrontend-preview-cftos3cloudfrontloggingb-p9dzhmhjqxlo/" --recursive | tail -20
-
-# Redeploy
+# Manual deployment (preview environment)
 ./scripts/deploy.sh
 ```
 
