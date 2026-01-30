@@ -242,6 +242,14 @@ We use GitHub Issues as the official bug tracker for Volt React Dashboard. Here 
 2. Providing us reproducible steps for the issue will shorten the time it takes for it to be fixed.
 3. Some issues may be browser specific, so specifying in what browser you encountered the issue might help.
 
+## Deployment
+
+Deployed at: https://d2uqq7hyyq6bc1.cloudfront.net, using the [deploy-frontend-app] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
+
+Deployment command: `./scripts/deploy.sh`
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
+
 ## Technical Support or Questions
 
 If you have questions or need help integrating the product please [contact us](https://themesberg.com/contact) instead of opening an issue.
