@@ -37,12 +37,18 @@ npm run lint
 ## Deployment Commands
 
 ```bash
-# Deploy to preview environment
+# Automated deployment via pipeline (push to GitHub)
+git push origin deploy-to-aws-20260130_032535-sergeyka
+
+# Manual deploy to preview environment
 ./scripts/deploy.sh
 
 # Deploy to specific environment
 ./scripts/deploy.sh dev
 ./scripts/deploy.sh prod
+
+# View pipeline status
+aws codepipeline get-pipeline-state --name VoltReactPipeline
 ```
 
 ## Technology Stack

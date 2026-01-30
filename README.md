@@ -244,9 +244,12 @@ We use GitHub Issues as the official bug tracker for Volt React Dashboard. Here 
 
 ## Deployment
 
-Deployed at: https://d2uqq7hyyq6bc1.cloudfront.net, using the [deploy-frontend-app] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
+Deployed at: https://d2uqq7hyyq6bc1.cloudfront.net
 
-Deployment command: `./scripts/deploy.sh`
+**Pipeline**: Automated deployments via AWS CodePipeline
+**Deploy**: `git push origin deploy-to-aws-20260130_032535-sergeyka`
+
+Created with the [deploy-frontend-app] and [setup-pipeline] Agent Standard Operation Procedures from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
 

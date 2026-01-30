@@ -1,12 +1,13 @@
 # Deployment Summary
 
-Your app is deployed to AWS! Preview URL: https://d2uqq7hyyq6bc1.cloudfront.net
+Your app is deployed to AWS with automated CI/CD!
 
-**Next Step: Automate Deployments**
+**Production URL**: https://d2uqq7hyyq6bc1.cloudfront.net (production stack will be created by pipeline)
+**Preview URL**: https://d2uqq7hyyq6bc1.cloudfront.net
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
+**Pipeline**: Automated deployments from GitHub branch `deploy-to-aws-20260130_032535-sergeyka`
 
-Services used: CloudFront, S3, CloudFormation, IAM
+Services used: CodePipeline, CodeBuild, CodeConnections, CloudFront, S3, CloudFormation, IAM
 
 Questions? Ask your Coding Agent:
  - What resources were deployed to AWS?
@@ -15,17 +16,23 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
+# View pipeline status
+aws codepipeline get-pipeline-state --name VoltReactPipeline --query 'stageStates[*].[stageName,latestExecution.status]' --output table
+
+# View build logs
+aws logs tail "/aws/codebuild/VoltReactPipeline-selfupdate" --follow
+
+# Trigger manual pipeline execution
+aws codepipeline start-pipeline-execution --name VoltReactPipeline
+
+# Deploy (automatic on git push)
+git push origin deploy-to-aws-20260130_032535-sergeyka
+
+# View preview deployment status
 aws cloudformation describe-stacks --stack-name "VoltReactFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text
 
-# Invalidate CloudFront cache
+# Invalidate CloudFront cache (preview)
 aws cloudfront create-invalidation --distribution-id "EZABKTM88X4J9" --paths "/*"
-
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://voltreactfrontend-preview-cftos3cloudfrontloggingb-oxpmlg0gmv5j/" --recursive | tail -20
-
-# Redeploy
-./scripts/deploy.sh
 ```
 
 ## Production Readiness
