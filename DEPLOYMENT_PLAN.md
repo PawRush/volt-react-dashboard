@@ -5,7 +5,7 @@ app_name: VoltReact
 app_type: Frontend Application
 branch: deploy-to-aws-20260501_121659-kamielw
 created: 2026-05-01T12:19:00Z
-last_updated: 2026-05-01T12:26:00Z
+last_updated: 2026-05-01T12:27:00Z
 ---
 
 # Deployment Plan: Volt React Dashboard
@@ -39,8 +39,8 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 - [x] Step 9: Validate CDK Synth
 
 ## Phase 3: Deploy and Validate
-- [ ] Step 10: Execute CDK Deployment
-- [ ] Step 11: Validate CloudFormation Stack
+- [x] Step 10: Execute CDK Deployment
+- [x] Step 11: Validate CloudFormation Stack
 
 ## Phase 4: Update Documentation
 - [ ] Step 12: Finalize Deployment Plan
@@ -48,12 +48,14 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Deployment Info
 
-- Deployment URL: [after completion]
-- Stack name: [after creation]
-- Distribution ID: [after creation]
-- S3 Bucket: [after creation]
-- CloudFront Log Bucket: [after creation]
-- S3 Log Bucket: [after creation]
+- Deployment URL: https://d1w2gs0bjq0eso.cloudfront.net
+- Stack name: VoltReactFrontend-preview-kamielw
+- Region: eu-central-1
+- Distribution ID: E190BQMMQU9X2N
+- S3 Bucket: voltreactfrontend-preview-k-cftos3s3bucketcae9f2be-6pw8jiwcj9vx
+- CloudFront Log Bucket: voltreactfrontend-preview-cftos3cloudfrontloggingb-e9nsb9gsiboa
+- S3 Log Bucket: voltreactfrontend-preview-cftos3s3loggingbucket64b-lktmzpuj9s4z
+- Deployment timestamp: 2026-05-01T12:26:03Z
 
 ## Recovery Guide
 
