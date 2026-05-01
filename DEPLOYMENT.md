@@ -11,11 +11,12 @@ status: completed
 
 # Deployment Summary
 
-Your app is deployed to AWS! Preview URL: https://d1w2gs0bjq0eso.cloudfront.net
+Your app is deployed to AWS with automated CI/CD! 
 
-**Next Step: Automate Deployments**
+**Preview URL:** https://d1w2gs0bjq0eso.cloudfront.net  
+**Production Pipeline:** Changes pushed to `deploy-to-aws-20260501_121659-kamielw` branch automatically deploy via AWS CodePipeline.
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
+**Pipeline Console:** https://eu-central-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactPipeline/view
 
 Services used: CloudFront, S3, CloudFormation, IAM
 
@@ -125,3 +126,49 @@ Progress: Complete deployment from initialization through production deployment
 - Deployed to AWS successfully
 - Validated stack and website accessibility
 Status: Deployment completed successfully
+
+### Session 2 - 2026-05-01T12:30:00Z - 2026-05-01T12:35:00Z
+Agent: Claude Sonnet 4.5  
+SOP: setup-pipeline
+Progress: Complete CI/CD pipeline setup
+- Detected existing infrastructure (FrontendStack)
+- Used existing CodeConnection (already AVAILABLE)
+- Created CDK Pipeline Stack (pipeline-stack.ts)
+- Updated infra/bin/infra.ts for pipeline support
+- Deployed VoltReactPipelineStack successfully
+- Pipeline automatically triggered and running
+Status: Pipeline deployment completed successfully
+
+## Pipeline Information
+
+- **Pipeline Name:** VoltReactPipeline
+- **Pipeline Stack:** VoltReactPipelineStack
+- **Pipeline URL:** https://eu-central-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VoltReactPipeline/view
+- **Pipeline ARN:** arn:aws:codepipeline:eu-central-1:189681391221:VoltReactPipeline
+- **CodeConnection ARN:** arn:aws:codeconnections:eu-central-1:189681391221:connection/ee7a600a-99ab-4b3a-bf6c-b42cc9f5a026
+- **Source Branch:** deploy-to-aws-20260501_121659-kamielw
+- **Repository:** PawRush/volt-react-dashboard
+
+### Pipeline Stages
+
+1. **Source:** Pull from GitHub via CodeConnection
+2. **Build (Synth):** Quality checks (lint, test) + CDK synthesis
+3. **UpdatePipeline:** Self-mutation (if pipeline changed)
+4. **Assets:** Publish file assets
+5. **Deploy:** Deploy VoltReactFrontend-prod stack
+
+### Pipeline Quick Commands
+
+```bash
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VoltReactPipeline" --region eu-central-1 --query 'stageStates[*].[stageName,latestExecution.status]' --output table
+
+# View build logs
+aws logs tail "/aws/codebuild/VoltReactPipelineStack-Synth" --region eu-central-1 --follow
+
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VoltReactPipeline" --region eu-central-1
+
+# Destroy pipeline
+cd infra && npm run destroy:pipeline
+```
