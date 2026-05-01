@@ -1,71 +1,65 @@
 ---
-sop_name: deploy-frontend-app
-repo_name: volt-react-dashboard
+sop_name: setup-pipeline
+repo_name: kamielwanrooij/volt-react-dashboard
 app_name: VoltReact
-app_type: Frontend Application
+app_type: CI/CD Pipeline
 branch: deploy-to-aws-20260501_121659-kamielw
-created: 2026-05-01T12:19:00Z
-last_updated: 2026-05-01T12:27:00Z
+created: 2026-05-01T12:00:00Z
+last_updated: 2026-05-01T12:15:00Z
 ---
 
-# Deployment Plan: Volt React Dashboard
+# Deployment Plan: VoltReact Pipeline
 
 Coding Agents should follow this Deployment Plan, and validate previous progress if picking up the Deployment in a new coding session.
 
 **IMPORTANT**: Update this plan after EACH step completes. Mark the step `[x]` and update `last_updated` timestamp.
 
-## Build Configuration
-- Framework: Create React App (CRA)
-- Package manager: npm
-- Build command: `npm run build`
-- Output directory: `build/`
-- Base path: `/` (root)
-- Entry point: `index.html`
-- Lint command: `npm run lint`
-- Application type: SPA (Single Page Application)
-
 ## Phase 1: Gather Context and Configure
 - [x] Step 0: Inform User of Execution Flow
 - [x] Step 1: Create Deployment Plan
-- [x] Step 2: Create Deploy Branch
-- [x] Step 3: Detect Build Configuration
-- [x] Step 4: Validate Prerequisites
-- [x] Step 5: Revisit Deployment Plan
+- [x] Step 2: Detect Existing Infrastructure
+  - [x] 2.1: Detect stacks, frontend, and backend
+  - [x] 2.2: Detect app name and git repository
+  - [x] 2.3: Determine quality checks
+  - [x] 2.4: User confirmation
+  - [x] 2.5: Create CodeConnection (SKIPPED - using existing ARN)
+  - [x] 2.6: Ensure Production Secrets (SKIPPED - no backend detected)
 
-## Phase 2: Build CDK Infrastructure
-- [x] Step 6: Initialize CDK Foundation
-- [x] Step 7: Generate CDK Stack
-- [x] Step 8: Create Deployment Script
-- [x] Step 9: Validate CDK Synth
+## Phase 2: Build and Deploy Pipeline
+- [ ] Step 3: Create CDK Pipeline Stack
+- [ ] Step 4: CDK Bootstrap
+- [ ] Step 5: Deploy Pipeline
+  - [ ] 5.1: Push to remote
+  - [ ] 5.2: Authorize CodeConnection
+  - [ ] 5.3: Deploy pipeline stack
+  - [ ] 5.4: Trigger pipeline
+- [ ] Step 6: Monitor Pipeline
 
-## Phase 3: Deploy and Validate
-- [x] Step 10: Execute CDK Deployment
-- [x] Step 11: Validate CloudFormation Stack
-
-## Phase 4: Update Documentation
-- [ ] Step 12: Finalize Deployment Plan
-- [ ] Step 13: Update README.md
+## Phase 3: Documentation
+- [ ] Step 7: Finalize Deployment Plan
+- [ ] Step 8: Update README.md
 
 ## Deployment Info
 
-- Deployment URL: https://d1w2gs0bjq0eso.cloudfront.net
-- Stack name: VoltReactFrontend-preview-kamielw
+- CodeConnection ARN: arn:aws:codeconnections:eu-central-1:189681391221:connection/ee7a600a-99ab-4b3a-bf6c-b42cc9f5a026
+- Pipeline URL: [after completion]
+- Stack name: [after creation]
 - Region: eu-central-1
-- Distribution ID: E190BQMMQU9X2N
-- S3 Bucket: voltreactfrontend-preview-k-cftos3s3bucketcae9f2be-6pw8jiwcj9vx
-- CloudFront Log Bucket: voltreactfrontend-preview-cftos3cloudfrontloggingb-e9nsb9gsiboa
-- S3 Log Bucket: voltreactfrontend-preview-cftos3s3loggingbucket64b-lktmzpuj9s4z
-- Deployment timestamp: 2026-05-01T12:26:03Z
 
 ## Recovery Guide
 
 ```bash
-# Rollback
-cd infra
-cdk destroy "VoltReactFrontend-preview-kamielw"
+# Rollback - Destroy pipeline
+(cd infra && npm run destroy:pipeline)
 
-# Redeploy
-./scripts/deploy.sh
+# Manual pipeline trigger
+aws codepipeline start-pipeline-execution --name "VoltReactPipeline"
+
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VoltReactPipeline"
+
+# View build logs
+aws logs tail "/aws/codebuild/VoltReactPipelineStack-Synth" --follow
 ```
 
 ## Issues Encountered
@@ -74,7 +68,25 @@ None.
 
 ## Session Log
 
-### Session 1 - 2026-05-01T12:19:00Z
+### Session 1 - 2026-05-01T12:00:00Z
 Agent: Claude Sonnet 4.5
-Progress: Created deployment plan, checked prerequisites, analyzed codebase
-Next: Step 2 - Create Deploy Branch
+Progress: Created deployment plan, completed infrastructure detection
+Next: Step 2.4 - User confirmation
+
+## Infrastructure Detection Details
+
+**Stacks Detected:**
+- VoltReactFrontend (Frontend Stack) - CloudFront + S3
+
+**Package Manager:** npm (detected from package-lock.json)
+
+**Build Output:** build/ (detected from package.json build script using react-scripts)
+
+**Backend:**
+- Lambda stack: Not detected
+- Lambda functions: None
+- Secrets required: No
+
+**Quality Checks:**
+- lint: Pass ✓ (eslint)
+- test: Pass ✓ (react-scripts test - no tests defined, passes with --passWithNoTests)
